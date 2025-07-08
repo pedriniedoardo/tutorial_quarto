@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "interactive_compute_advanced.html",
+    "href": "interactive_compute_advanced.html",
+    "title": "Interactive work without a server with web assembly",
+    "section": "",
+    "text": "A more complex examples with more interactive inputs (NB: it seems that when moving the slider the image get re-computed for each intermediate value, leading to some slowness sometimes) :\n\n\n\n\n\n\n\n\n\nviewof sex_show = Inputs.radio([\"M\", \"F\"], {label: \"Sex:\",value:\"F\"})\n\nviewof year = Inputs.range([1880, 2010], {step: 10, label: \"starting year:\"})\n\nviewof n_names = Inputs.range([1, 12], {step: 1, label: \"number of top names:\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYou can also just have interactive R/python cells where you can write and execute code :"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tutorial",
+    "section": "",
+    "text": "Introduction\nIn this project we aim to visualize the trends of the most frequently used babynames from 1880 to 2017 in the United States. We do this by:\n\nUnderstanding the different columns of the data set\nFind the top 10 most frequently used baby names in the data for:\n\ngirls\nboys\n\nPlot the yearly trend of the top 10 baby names\n\n\n\n\nbaby_image"
+  },
+  {
+    "objectID": "interactive_compute.html",
+    "href": "interactive_compute.html",
+    "title": "Interactive work without a server with web assembly",
+    "section": "",
+    "text": "Histogram interacting with a javascript Observable input component:\n\nviewof sex_box = Inputs.checkbox(\n  [\"M\", \"F\"],\n  {\n    value: [\"M\", \"F\"],\n    label: \"Shown sexes:\",\n  }\n)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "scr/quarto_scr.html",
+    "href": "scr/quarto_scr.html",
+    "title": "quarto_test",
+    "section": "",
+    "text": "Try to access a file outside the main directory\n\ndir(\"../../test/\")\n\n[1] \"analysis.Rproj\" \"renv\"           \"renv.lock\"      \"scr\""
+  },
+  {
+    "objectID": "analysis.html",
+    "href": "analysis.html",
+    "title": "analysis",
+    "section": "",
+    "text": "With this chunk of code we load the packages needed for the analysis.\n\nlibrary(babynames)\nlibrary(knitr)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(tidyr)\nlibrary(pheatmap)\n\nLoad the custom functions. Use the #| code-fold: true to hide the code\n\n\nCode\n#\nget_most_frequent &lt;- function(babynames, select_sex, from = 1950) {\n  most_freq &lt;- babynames |&gt;\n    filter(sex == select_sex, year &gt; from) |&gt;\n    group_by(name) |&gt;\n    summarise(average = mean(prop)) |&gt;\n    arrange(desc(average))\n    \n  return(list(\n    babynames = babynames,\n    most_frequent = most_freq,\n    sex = select_sex,\n    from = from))\n}\n\nplot_top &lt;- function(x, top = 10) {\n  topx &lt;- x$most_frequent$name[1:top]\n  \n  p &lt;- x$babynames |&gt;\n    filter(name %in% topx, sex == x$sex, year &gt; x$from) |&gt;\n    ggplot(aes(x = year, y = prop, color = name)) +\n    geom_line() +\n    scale_color_brewer(palette = \"Paired\") +\n    theme_classic()\n  \n  return(p)\n}\n\n\n\n\n\nIn this chunk of code we print the head of the table\n\nhead(babynames)\n\n# A tibble: 6 x 5\n   year sex   name          n   prop\n  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;\n1  1880 F     Mary       7065 0.0724\n2  1880 F     Anna       2604 0.0267\n3  1880 F     Emma       2003 0.0205\n4  1880 F     Elizabeth  1939 0.0199\n5  1880 F     Minnie     1746 0.0179\n6  1880 F     Margaret   1578 0.0162\n\n\nHere we also render the table\n\nhead(babynames) |&gt; kable()\n\n\n\n\nyear\nsex\nname\nn\nprop\n\n\n\n\n1880\nF\nMary\n7065\n0.0723836\n\n\n1880\nF\nAnna\n2604\n0.0266790\n\n\n1880\nF\nEmma\n2003\n0.0205215\n\n\n1880\nF\nElizabeth\n1939\n0.0198658\n\n\n1880\nF\nMinnie\n1746\n0.0178884\n\n\n1880\nF\nMargaret\n1578\n0.0161672\n\n\n\n\n\nTry to access a file outside the main directory\n\ndir(\"../test/scr/\")\n\n[1] \"00_setup.R\"  \"hello.html\"  \"hello.qmd\"   \"hello_files\"\n\n\n\n\n\nPlotting them for girls like this:\n\nget_most_frequent(babynames, select_sex = \"F\") |&gt; plot_top()\n\n\n\n\n\n\n\nFigure 1: Line plot displaying proportion of top 10 girl names by year\n\n\n\n\n\nPlotting them for boys like this:\n\nget_most_frequent(babynames, select_sex = \"M\") |&gt; plot_top()\n\n\n\n\nLine plot displaying proportion of top 10 boy names by year"
+  },
+  {
+    "objectID": "analysis.html#load-the-packages",
+    "href": "analysis.html#load-the-packages",
+    "title": "analysis",
+    "section": "",
+    "text": "With this chunk of code we load the packages needed for the analysis.\n\nlibrary(babynames)\nlibrary(knitr)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(tidyr)\nlibrary(pheatmap)\n\nLoad the custom functions. Use the #| code-fold: true to hide the code\n\n\nCode\n#\nget_most_frequent &lt;- function(babynames, select_sex, from = 1950) {\n  most_freq &lt;- babynames |&gt;\n    filter(sex == select_sex, year &gt; from) |&gt;\n    group_by(name) |&gt;\n    summarise(average = mean(prop)) |&gt;\n    arrange(desc(average))\n    \n  return(list(\n    babynames = babynames,\n    most_frequent = most_freq,\n    sex = select_sex,\n    from = from))\n}\n\nplot_top &lt;- function(x, top = 10) {\n  topx &lt;- x$most_frequent$name[1:top]\n  \n  p &lt;- x$babynames |&gt;\n    filter(name %in% topx, sex == x$sex, year &gt; x$from) |&gt;\n    ggplot(aes(x = year, y = prop, color = name)) +\n    geom_line() +\n    scale_color_brewer(palette = \"Paired\") +\n    theme_classic()\n  \n  return(p)\n}"
+  },
+  {
+    "objectID": "analysis.html#processing",
+    "href": "analysis.html#processing",
+    "title": "analysis",
+    "section": "",
+    "text": "In this chunk of code we print the head of the table\n\nhead(babynames)\n\n# A tibble: 6 x 5\n   year sex   name          n   prop\n  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;\n1  1880 F     Mary       7065 0.0724\n2  1880 F     Anna       2604 0.0267\n3  1880 F     Emma       2003 0.0205\n4  1880 F     Elizabeth  1939 0.0199\n5  1880 F     Minnie     1746 0.0179\n6  1880 F     Margaret   1578 0.0162\n\n\nHere we also render the table\n\nhead(babynames) |&gt; kable()\n\n\n\n\nyear\nsex\nname\nn\nprop\n\n\n\n\n1880\nF\nMary\n7065\n0.0723836\n\n\n1880\nF\nAnna\n2604\n0.0266790\n\n\n1880\nF\nEmma\n2003\n0.0205215\n\n\n1880\nF\nElizabeth\n1939\n0.0198658\n\n\n1880\nF\nMinnie\n1746\n0.0178884\n\n\n1880\nF\nMargaret\n1578\n0.0161672\n\n\n\n\n\nTry to access a file outside the main directory\n\ndir(\"../test/scr/\")\n\n[1] \"00_setup.R\"  \"hello.html\"  \"hello.qmd\"   \"hello_files\""
+  },
+  {
+    "objectID": "analysis.html#plotting",
+    "href": "analysis.html#plotting",
+    "title": "analysis",
+    "section": "",
+    "text": "Plotting them for girls like this:\n\nget_most_frequent(babynames, select_sex = \"F\") |&gt; plot_top()\n\n\n\n\n\n\n\nFigure 1: Line plot displaying proportion of top 10 girl names by year\n\n\n\n\n\nPlotting them for boys like this:\n\nget_most_frequent(babynames, select_sex = \"M\") |&gt; plot_top()\n\n\n\n\nLine plot displaying proportion of top 10 boy names by year"
+  }
+]
