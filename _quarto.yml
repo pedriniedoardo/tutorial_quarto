@@ -9,6 +9,8 @@ website:
         text: Home
       - about.qmd
       - analysis.qmd
+      - interactive_compute.qmd
+      - interactive_compute_advanced.qmd
 
 format:
   html:
