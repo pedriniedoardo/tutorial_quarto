@@ -1,0 +1,9 @@
+---
+title: "quarto_test"
+---
+
+Try to access a file outside the main directory
+
+```{r}
+dir("../../test/")
+```

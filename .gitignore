@@ -1,0 +1,10 @@
+# Ignore R related files and folders
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+renv/
+
+# Ignore Quarto and site files
+/.quarto/
+_site/
