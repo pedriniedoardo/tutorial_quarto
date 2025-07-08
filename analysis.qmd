@@ -128,3 +128,11 @@ pheatmap(prop_mat, cluster_cols = FALSE, scale = "row")
 ```
 
 In @fig-plots-1 and @fig-plots-2 the line plots are shown. To view trends of many names at once, @fig-plots-3 displays a heatmap.
+
+Add a new line to see the live command
+
+```{r}
+babynames %>%
+  group_by(year) %>%
+  summarise(n = n())
+```
